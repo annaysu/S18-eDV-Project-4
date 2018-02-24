@@ -29,3 +29,4 @@ tabItem(tabName = "Histogram",
         #where the plot is displayed since it's not said above or anywhere else lol
         plotlyOutput("Histogram__1_", height=800)
 )
+#Misc Change
