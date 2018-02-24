@@ -49,7 +49,7 @@ source("DataA.R", local = TRUE)
 source("DataB.R", local = TRUE)
 ```
 
-#Retrieve Regions from the SuperStore dataset
+#Retrieve Regions from the IBM Attrition dataset
 The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
 ```{r}
 project <- "https://data.world/cannata/tophatsuperstore" 
