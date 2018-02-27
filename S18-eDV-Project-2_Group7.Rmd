@@ -5,6 +5,7 @@ resource_files:
 - .Renviron
 output:
   html_notebook:
+    theme: united
     code_folding: hide
     toc: yes
     toc_depth: 4
@@ -52,7 +53,7 @@ source("DataB.R", local = TRUE)
 #Retrieve Regions from the IBM Attrition dataset
 The following query retrieves the distinct department names from the IBM Attirtion dataset at data.world and saves the department names in the department variable.
 ```{r}
-project <- "https://data.world/cannata/tophatsuperstore" 
+project <- "https://data.world/yuchan-su/s18-edv-project-2" 
 data.world::set_config(cfg_env("DW_API")) 
 
 #query that selects region
@@ -90,7 +91,7 @@ Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/t
 
 ```{r}
 #show they have four different side 
-dashboardPage(
+ui <- dashboardPage(
   dashboardHeader(
   ),
   dashboardSidebar(
@@ -133,10 +134,16 @@ dashboardPage(
     )
   )
 )
+
 source("Histogram1Server.R", local = TRUE)
 source("Density1Server.R", local = TRUE)
 source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
+
+server <- function(input, output) {}
+
+shinyApp(ui, server)
+
 ```
 
 #Naren's Test Code
