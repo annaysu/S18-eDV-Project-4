@@ -4,7 +4,7 @@ dfA <- eventReactive(c(input$selectDepartment_1), {
   paramQuery <- data.world::qry_sql(
     "   
     select department, monthlyincome
-    from ibm_hr_attrition s
+    from ibm_hr_attrition
     where department in (?, ?, ?)
     order by monthlyincome
     ")

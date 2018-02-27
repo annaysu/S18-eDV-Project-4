@@ -94,7 +94,7 @@ dashboardPage(
     sidebarMenu(
       menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
       menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("dashboard")),
-      menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("dashboard")),
+      menuItem("Department Satisfaction", tabName = "both", icon = icon("dashboard")),
       menuItem("Department Age", tabName = "newplot", icon = icon("dashboard"))
     )
   ),

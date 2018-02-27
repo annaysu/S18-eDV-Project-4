@@ -3,7 +3,7 @@ dfB <- eventReactive(c(input$selectDepartment_1), {
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
     "   
-    select department, age
+    select department, age, distancefromhome
     from ibm_hr_attrition
     where department in (?, ?, ?)
     order by department
@@ -21,3 +21,4 @@ dfB1 <- eventReactive(c(input$selectDepartment_1, input$yDataMin__1_, input$yDat
     dfB()
   }
 })
+
