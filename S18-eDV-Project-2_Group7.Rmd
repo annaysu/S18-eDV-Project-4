@@ -18,9 +18,7 @@ This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.
 #Load Packages
 This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
 The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
-```{r set-options, echo=FALSE, cache=FALSE}
-options(width = 10000)
-```
+
 
 
 ```{r setup, echo=FALSE}
@@ -109,7 +107,6 @@ ui <- dashboardPage( skin = "green",
     )
   ),
   dashboardBody(
-    width = 800,
     tabItems(
       # 1. "Monthly Income Histogram" tab content
       tabItem(tabName = "histogram",
