@@ -14,10 +14,9 @@
 # Build and Output Throughput Plot ------------------------
   output$Histogram__4_ <- renderPlotly({
     plot = dfB1() %>% ggplot() + 
-      geom_histogram(mapping = aes(x=sales, colour = region, fill = region), binwidth = 10) +
-      
+      geom_histogram(mapping = aes(x=age, colour = departments, fill = departments), binwidth = 10) +
       theme_bw() +
-      theme(plot.title = element_text(size = input$titleFont__4_, face = "bold")) + 
+      theme(plot.title = element_text(face = "bold")) + 
       theme( # Legend Attributes - see https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
         legend.title=element_text(size=input$legendTitleSize__4_), 
         legend.text=element_text(size=input$legendItemSize__4_),
@@ -28,7 +27,7 @@
             axis.text.x = element_text(angle = 45, hjust = 1))  +
       theme(plot.margin=unit(c(2,2,2,2),"cm")) +
       scale_y_continuous(labels = scales::comma) + # Disable scientific notation
-      ggtitle(paste(Regions(), input$title__4_)) +
+      ggtitle(paste(Department(), input$title__4_)) +
       xlab(input$xLabel__4_) + ylab(input$yLabel__4_) +
       theme(axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))) +
       scale_color_discrete(name = input$legendTitle__4_)
