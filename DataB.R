@@ -1,4 +1,4 @@
-dfA <- eventReactive(c(input$selectDepartment_1), { 
+dfB <- eventReactive(c(input$selectDepartment_1), { 
   project <- "https://data.world/yuchan-su/s18-edv-project-2" 
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
@@ -13,11 +13,11 @@ dfA <- eventReactive(c(input$selectDepartment_1), {
   data.world::query(paramQuery, dataset = project)
 })
 
-dfA1 <- eventReactive(c(input$selectDepartment_1, input$yDataMin__1_, input$yDataMax__1_), { 
+dfB1 <- eventReactive(c(input$selectDepartment_1, input$yDataMin__1_, input$yDataMax__1_), { 
   if( ! is.na(input$yDataMin__1_) & ! is.na(input$yDataMax__1_)) {
-    dfA() %>% dplyr::filter(between(age, input$yDataMin__1_, input$yDataMax__1_))
+    dfB() %>% dplyr::filter(between(age, input$yDataMin__1_, input$yDataMax__1_))
   }
   else {
-    dfA()
+    dfB()
   }
 })
