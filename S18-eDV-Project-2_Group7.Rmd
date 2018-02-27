@@ -101,7 +101,7 @@ ui <- dashboardPage( skin = "green",
     width = 350,
     sidebarMenu(
       menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("asymmetrik")),
-      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("asymmetrik")),
+      menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("asymmetrik")),
       menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("asymmetrik")),
       menuItem("Sales Histogram", tabName = "newplot", icon = icon("asymmetrik"))
     )
@@ -110,12 +110,11 @@ ui <- dashboardPage( skin = "green",
     tabItems(
       # 1. "Monthly Income Histogram" tab content
       tabItem(tabName = "histogram",
-        p("This histogram shows the monthly income found in our data, distributed by age."),
+        p("This histogram shows the monthly income found in our data."),
         source("Histogram1UI.R",local = TRUE)$value
       ),
-      # 2. "Shipping Costs Density Plot" tab content
+      # 2. "Monthly Income Density Plot" tab content
       tabItem(tabName = "density",
-        p("And here."),
         source("Density1UI.R",local = TRUE)$value
       ),
       # 3. "Shipping Costs Histogram and Density Plot" tab content
@@ -127,13 +126,8 @@ ui <- dashboardPage( skin = "green",
       tabItem(tabName = "newplot",
         p("And even here."),
         source("NewPlot1UI.R",local = TRUE)$value
-      ),
-      #creating a differ one, tabname is to be unique in this case; then now you ahve ability to have FIVE plots. And then you go and make the server and UI file to change the graphs
-      # 5. "Sales Histogram" tab content
-      tabItem(tabName = "newnewplot",
-        p("And even here."),
-        source("NewPlot1UI.R",local = TRUE)$value
       )
+      
     )
   )
 )
