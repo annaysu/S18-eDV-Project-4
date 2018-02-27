@@ -1,5 +1,5 @@
 # Change "histogram1", all __1_s, and edit tiles below:
-tabItem(tabName = "Histogram",
+tabItem(tabName = "histogram",
         tabsetPanel( 
           tabPanel("Plots"),# To create a tab panel - see https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html
           #the table__1_ is defined in the SERVER code

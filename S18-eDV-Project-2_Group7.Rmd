@@ -21,7 +21,7 @@ The last line of this code chunk enables document caching, which is expalined at
 
 
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 library(tidyverse)
 library(shiny)
 library(grid)
