@@ -91,22 +91,21 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Shipping Costs Histogram", tabName = "histogram", icon = icon("dashboard")),
-      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("dashboard")),
+      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
+      menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("dashboard")),
       menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("dashboard")),
       menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
     tabItems(
-      # 1. "Shipping Costs Histogram" tab content
+      # 1. "Monthly Incomes Histogram" tab content
       tabItem(tabName = "histogram",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        p("This plot shows the histogram of the monthly income of different departments"),
         source("Histogram1UI.R",local = TRUE)$value
       ),
-      # 2. "Shipping Costs Density Plot" tab content
+      # 2. "Monthly Incomes Density Plot" tab content
       tabItem(tabName = "density",
-        p("And here."),
         source("Density1UI.R",local = TRUE)$value
       ),
       # 3. "Shipping Costs Histogram and Density Plot" tab content
@@ -128,43 +127,5 @@ source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
 ```
 
-#Essential steps to add a new plot:
-##1. Copy and change "newplot" to "newnewplot"  
-    ,
-      menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard"))  
-###  To  
-    ,
-      menuItem("Sales Histogram", tabName = "newnewplot", icon = icon("dashboard"))  
-##2. Copy and make changes in three places as indicated below  
-    ,  
-      # 4. "Sales Histogram" tab content  
-      tabItem(tabName = "newplot",  
-        p("And even here."),  
-        source("NewPlot1UI.R",local = TRUE)$value  
-      )  
-###  To  
-    ,  
-      # 5. "Sales Histogram 2" tab content   <- Change  
-      tabItem(tabName = "newnewplot",        <- Change  
-        p("And even here."),  
-        source("NewNewPlot1UI.R",local = TRUE)$value   <- Change  
-      )  
-##3. Copy and change "NewPlot1Server.R" to "NewNewPlot1Server.R"  
-      source("NewPlot1Server.R", local = TRUE)  
-###   To  
-      source("NewNewPlot1Server.R", local = TRUE)   <- Change  
-##4. Open a UI.R file, save as a new UI.R file, change __N_ to __M_ 
-
-##5. Open a Server.R file, save as a new Server.R file, change __N_ to __M_  
-
-# Make a Second Dashboard  
-##1. Copy and Paste the Dashboards chunk above.  
-##2. Remove all but on sidebarMenu item.
-##3. Rename the source files to new source files as in Steps 2 and 3 above.
-##4. Create the new UI.R and Server.R files as in Steps 4 and 5 above.
-##5. Add more sidebarMenu items as outlined above.
-
-#Appendix
-Data Cleaning Code.
 
 

@@ -1,21 +1,16 @@
 # Change all __1_s, Download information, and edit the plot and ggplotly arguments below:
 # Build Download Button and Output DataTable---------------
-#Here defined the variables used in 1UI
   output$download__1_ <- downloadHandler(
     filename = function(){"Histogram.csv"}, 
     content = function(fname){
       write.csv(dfA1(), fname)
     }
   )
-  #create a data table and put it right into the DATATAB on the 1UI files
   output$table__1_ <- renderDataTable({
     DT::datatable(dfA1() , rownames = FALSE, extensions = list(Responsive = TRUE, FixedHeader = TRUE)
     )
   })
 # ---------------------------------------------------------
-# Build and Output Throughput Plot ------------------------
-  
-  p("THIS IS A TEST ****************************")
   
   output$Histogram__1_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
@@ -33,7 +28,7 @@
             axis.text.x = element_text(angle = 45, hjust = 1))  +
       theme(plot.margin=unit(c(2,2,2,2),"cm")) +
       scale_y_continuous(labels = scales::comma) + # Disable scientific notation
-      ggtitle(paste(Department(), input$title__1_)) +
+      ggtitle(paste(Departments(), input$title__1_)) +
       xlab(input$xLabel__1_) + ylab(input$yLabel__1_) +
       theme(axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))) +
       scale_color_discrete(name = input$legendTitle__1_)
