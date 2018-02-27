@@ -52,14 +52,14 @@ source("DataB.R", local = TRUE)
 #Retrieve Regions from the SuperStore dataset
 The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
 ```{r}
-project <- "https://data.world/yuchan-su/s18-edv-project-2" 
+project <- "https://data.world/cannata/tophatsuperstore" 
 data.world::set_config(cfg_env("DW_API")) 
 
 #query that selects region
-dataquery <- data.world::query(data.world::qry_sql(
+regions <- data.world::query(data.world::qry_sql(
  "   
-	select *
-  from ibm_hr_attrition
+	select distinct region
+	from superstore 
  "), 
 dataset = project)
 ```
