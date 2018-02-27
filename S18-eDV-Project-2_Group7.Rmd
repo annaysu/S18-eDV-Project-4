@@ -1,12 +1,10 @@
 ---
-title: "Project 2"
-author: "Anna Su, Donovan Calvert, Naren Makkapati"
+title: "Top Hat Histograms"
+author: "Dr. Cannata"
 resource_files:
 - .Renviron
 output:
   html_notebook:
-    css: style.css
-    theme: united
     code_folding: hide
     toc: yes
     toc_depth: 4
@@ -18,10 +16,6 @@ This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.
 #Load Packages
 This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
 The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
-```{r set-options, echo=FALSE, cache=FALSE}
-options(width = 10000)
-```
-
 
 ```{r setup, echo=FALSE}
 library(tidyverse)
@@ -42,21 +36,20 @@ sessionInfo()
 ```
 
 #Section for Links
-Data.world Project Link: https://data.world/yuchan-su/s18-edv-project-2
+data.world Project link.
 
-GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject1-su-makkapati-calvert
+GitHub Classroom Repository link.
 
 #Create Dataframes
-The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the IBM Attrition database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
+The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
 
 ```{r}
-#since you have two different dataframe...load into source here
-source("DataA.R", local = TRUE)
+#source("DataA.R", local = TRUE)
 source("DataB.R", local = TRUE)
 ```
 
-#Retrieve Regions from the IBM Attrition dataset
-The following query retrieves the distinct department names from the IBM Attirtion dataset at data.world and saves the department names in the department variable.
+#Retrieve Departments from the IBM Attrition dataset
+The following query retrieves the distinct department names from the SIBM Attrition dataset at data.world and saves the department names in the departments variable.
 ```{r}
 project <- "https://data.world/yuchan-su/s18-edv-project-2" 
 data.world::set_config(cfg_env("DW_API")) 
@@ -69,24 +62,22 @@ departments <- data.world::query(data.world::qry_sql(
  "), 
 dataset = project)
 ```
-#Create a Departments Variable
-Create a Department variable with a string constructed from the selected deparment in the input$selectDeparatment_1 variable.This Department variable will be used in the title of the ggplot below.
+#Create a Deparment Variable
+Create a Departments variable with a string constructed from the selected departments in the input$selectDepartment_1 variable.This Departments variable will be used in the title of the ggplot below.
 
 ```{r}
-Department <- eventReactive(c(input$selectDeparatment_1), { 
+Departments <- eventReactive(c(input$selectDepartment_1), { 
   library('stringr')
-  str_c(input$selectDeparatment_1, collapse=', ')
+  str_c(input$selectDepartment_1, collapse=', ')
 })
 ```
 
 #Create Panel with Select List
-The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting department (notice - choices is set to the department variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting departments (notice - choices is set to the departments variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
 
 ```{r}
-#what panel is this?? The regionselectpanel. So it's the oen taht appears To have all the select TABS. In a way this is a way for people on the website to REDO the query
-
 inputPanel(
-  selectInput("selectDeparatment_1", label = "Select Department",choices = departments, multiple=TRUE, selected=c("Sales","Human Resources","Research & Development"))
+  selectInput("selectDepartment_1", label = "Select Department",choices = departments, multiple=TRUE, selected=c("Sales","Human Resources","Research & Development"))
 )
 ```
 
@@ -95,25 +86,22 @@ inputPanel(
 Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
 
 ```{r}
-#show they have four different side 
-ui <- dashboardPage( skin = "green",
-  dashboardHeader( title = "IBM Human Resources Attrition Data"
+dashboardPage(
+  dashboardHeader(
   ),
   dashboardSidebar(
-    width = 350,
     sidebarMenu(
-      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("asymmetrik")),
-      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("asymmetrik")),
-      menuItem("Department Age Histogram", tabName = "both", icon = icon("asymmetrik")),
-      menuItem("Some boxplot", tabName = "newplot", icon = icon("asymmetrik"))
+      menuItem("Shipping Costs Histogram", tabName = "histogram", icon = icon("dashboard")),
+      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("dashboard")),
+      menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("dashboard")),
+      menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
-    width = 800,
     tabItems(
-      # 1. "Monthly Income Histogram" tab content
+      # 1. "Shipping Costs Histogram" tab content
       tabItem(tabName = "histogram",
-        p("This histogram shows the monthly income found in our data, distributed by age."),
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
         source("Histogram1UI.R",local = TRUE)$value
       ),
       # 2. "Shipping Costs Density Plot" tab content
@@ -131,27 +119,50 @@ ui <- dashboardPage( skin = "green",
         p("And even here."),
         source("NewPlot1UI.R",local = TRUE)$value
       )
-      #creating a differ one, tabname is to be unique in this case; then now you ahve ability to have FIVE plots. And then you go and make the server and UI file to change the graphs
     )
   )
 )
-
 source("Histogram1Server.R", local = TRUE)
 source("Density1Server.R", local = TRUE)
 source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
-
-server <- function(input, output) {}
-
-shinyApp(ui, server)
-
 ```
 
-#Naren's Test Code
-This is a test by Naren. If you see this, it worked.
+#Essential steps to add a new plot:
+##1. Copy and change "newplot" to "newnewplot"  
+    ,
+      menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard"))  
+###  To  
+    ,
+      menuItem("Sales Histogram", tabName = "newnewplot", icon = icon("dashboard"))  
+##2. Copy and make changes in three places as indicated below  
+    ,  
+      # 4. "Sales Histogram" tab content  
+      tabItem(tabName = "newplot",  
+        p("And even here."),  
+        source("NewPlot1UI.R",local = TRUE)$value  
+      )  
+###  To  
+    ,  
+      # 5. "Sales Histogram 2" tab content   <- Change  
+      tabItem(tabName = "newnewplot",        <- Change  
+        p("And even here."),  
+        source("NewNewPlot1UI.R",local = TRUE)$value   <- Change  
+      )  
+##3. Copy and change "NewPlot1Server.R" to "NewNewPlot1Server.R"  
+      source("NewPlot1Server.R", local = TRUE)  
+###   To  
+      source("NewNewPlot1Server.R", local = TRUE)   <- Change  
+##4. Open a UI.R file, save as a new UI.R file, change __N_ to __M_ 
 
+##5. Open a Server.R file, save as a new Server.R file, change __N_ to __M_  
+
+# Make a Second Dashboard  
+##1. Copy and Paste the Dashboards chunk above.  
+##2. Remove all but on sidebarMenu item.
+##3. Rename the source files to new source files as in Steps 2 and 3 above.
+##4. Create the new UI.R and Server.R files as in Steps 4 and 5 above.
+##5. Add more sidebarMenu items as outlined above.
 
 #Appendix
-Data cleaning Code.
-
-
+Data Cleaning Code.
