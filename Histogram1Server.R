@@ -14,6 +14,9 @@
   })
 # ---------------------------------------------------------
 # Build and Output Throughput Plot ------------------------
+  
+  p("THIS IS A TEST ****************************")
+  
   output$Histogram__1_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
       geom_histogram(mapping = aes(x=monthlyincome, colour = departments, fill = departments), binwidth = 10) +
