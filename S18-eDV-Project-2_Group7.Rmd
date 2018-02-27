@@ -5,6 +5,7 @@ resource_files:
 - .Renviron
 output:
   html_notebook:
+    css: style.css
     theme: united
     code_folding: hide
     toc: yes
@@ -17,6 +18,10 @@ This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.
 #Load Packages
 This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
 The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 10000)
+```
+
 
 ```{r setup, echo=FALSE}
 library(tidyverse)
@@ -122,19 +127,21 @@ Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/t
 
 ```{r}
 #show they have four different side 
-ui <- dashboardPage(
-  dashboardHeader(
+ui <- dashboardPage( skin = "green",
+  dashboardHeader( title = "IBM Human Resources Attrition Data"
   ),
   dashboardSidebar(
+    width = 350,
     sidebarMenu(
-      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
-      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("dashboard")),
-      menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("dashboard")),
-      menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard")),
-      menuItem("Sales Histogram", tabName = "newnewplot", icon = icon("dashboard"))
+      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("asymmetrik")),
+      menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("asymmetrik")),
+      menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("asymmetrik")),
+      menuItem("Sales Histogram", tabName = "newplot", icon = icon("asymmetrik")),
+      menuItem("Sales Histogram", tabName = "newnewplot", icon = icon("asymmetrik"))
     )
   ),
   dashboardBody(
+    width = 800,
     tabItems(
       # 1. "Monthly Income Histogram" tab content
       tabItem(tabName = "histogram",
