@@ -11,7 +11,7 @@ tabItem(tabName = "Histogram",
              numericInput("plotHeight__1_", "Plot Height (Required)", NA)),
           #you can edit the title and size of the font of the title
           tabPanel("Plot Title",
-             textInput("title__1_", "Title 1", "Monthly Income by Age and Occupation"),
+             textInput("title__1_", "Title 1", "Monthly Income by Department"),
              numericInput("titleFont__1_", "Title Font", 10)), 
           #you'll see four things under the legend tab
           tabPanel("Plot Legend",
