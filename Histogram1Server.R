@@ -16,7 +16,7 @@
 # Build and Output Throughput Plot ------------------------
   output$Histogram__1_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
-      geom_histogram(mapping = aes(x=monthly_income, colour = monthlyincome, fill = Age), binwidth = 10) +
+      geom_histogram(mapping = aes(x=monthlyincome, colour = departments, fill = departments), binwidth = 10) +
       
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__1_, face = "bold")) + 
