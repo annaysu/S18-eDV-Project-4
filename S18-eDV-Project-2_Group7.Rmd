@@ -5,6 +5,7 @@ resource_files:
 - .Renviron
 output:
   html_notebook:
+    theme: united
     code_folding: hide
     toc: yes
     toc_depth: 4
@@ -121,7 +122,7 @@ Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/t
 
 ```{r}
 #show they have four different side 
-dashboardPage(
+ui <- dashboardPage(
   dashboardHeader(
   ),
   dashboardSidebar(
@@ -164,10 +165,16 @@ dashboardPage(
     )
   )
 )
+
 source("Histogram1Server.R", local = TRUE)
 source("Density1Server.R", local = TRUE)
 source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
+
+server <- function(input, output) {}
+
+shinyApp(ui, server)
+
 ```
 
 #Naren's Test Code
