@@ -95,7 +95,7 @@ dashboardPage(
   ),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Shipping Costs Histogram", tabName = "histogram", icon = icon("dashboard")),
+      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
       menuItem("Shipping Costs Density Plot", tabName = "density", icon = icon("dashboard")),
       menuItem("Shipping Costs Histogram and Density Plot", tabName = "both", icon = icon("dashboard")),
       menuItem("Sales Histogram", tabName = "newplot", icon = icon("dashboard")),
@@ -104,9 +104,9 @@ dashboardPage(
   ),
   dashboardBody(
     tabItems(
-      # 1. "Shipping Costs Histogram" tab content
+      # 1. "Monthly Income Histogram" tab content
       tabItem(tabName = "histogram",
-        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        p("This histogram shows the monthly income found in our data, distributed by age."),
         source("Histogram1UI.R",local = TRUE)$value
       ),
       # 2. "Shipping Costs Density Plot" tab content
