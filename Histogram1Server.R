@@ -16,7 +16,7 @@
 # Build and Output Throughput Plot ------------------------
   output$Histogram__1_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
-      geom_histogram(mapping = aes(x=shipping_cost, colour = region, fill = region), binwidth = 10) +
+      geom_histogram(mapping = aes(x=monthly_income, colour = Age, fill = Age), binwidth = 10) +
       
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__1_, face = "bold")) + 
@@ -36,8 +36,8 @@
       scale_color_discrete(name = input$legendTitle__1_)
     
     if( ! is.na(input$plotWidth__1_) & ! is.na(input$plotHeight__1_))
-     ggplotly(plot, tooltip = c("shipping_cost"), session="knitr", width = input$plotWidth__1_, height = input$plotHeight__1_)
+     ggplotly(plot, tooltip = c("Monthly_Income"), session="knitr", width = input$plotWidth__1_, height = input$plotHeight__1_)
     else
-      ggplotly(plot, tooltip = c("shipping_cost"), session="knitr") 
+      ggplotly(plot, tooltip = c("Monthly_Income"), session="knitr") 
   })
 # ---------------------------------------------------------
