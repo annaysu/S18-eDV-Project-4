@@ -14,7 +14,7 @@
 # Build and Output Throughput Plot ------------------------
   output$Density__2_ <- renderPlotly({
     plot = dfA1() %>% ggplot() + 
-      geom_freqpoly(mapping = aes(x=monthlyincome, colour = department), binwidth = 10) +
+      geom_freqpoly(mapping = aes(x=monthlyincome, colour = department), binwidth = 1000) +
       
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__2_, face = "bold")) + 
