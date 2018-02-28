@@ -95,7 +95,8 @@ dashboardPage(
       menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
       menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("dashboard")),
       menuItem("Job Satisfaction", tabName = "both", icon = icon("dashboard")),
-      menuItem("Department Age", tabName = "newplot", icon = icon("dashboard"))
+      menuItem("Department Age", tabName = "newplot", icon = icon("dashboard")),
+      menuItem("New Boxplot", tabName = "boxplot", icon = icon("dashboard"))
     )
   ),
   dashboardBody(
@@ -118,14 +119,20 @@ dashboardPage(
       tabItem(tabName = "newplot",
         p("And even here."),
         source("NewPlot1UI.R",local = TRUE)$value
+      ),
+      # 5. "Monthly Incomes Histogram" tab content
+      tabItem(tabName = "boxplot",
+        p("This plot shows the histogram of the monthly income of different departments"),
+        source("Boxplot1UI.R",local = TRUE)$value
+      )
       )
     )
   )
-)
 source("Histogram1Server.R", local = TRUE)
 source("Density1Server.R", local = TRUE)
 source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
+source("Boxplot1Server.R", local = TRUE)
 ```
 
 #Appendix

@@ -27,7 +27,7 @@
             axis.title=element_text(size=input$textFont__1_, face="bold"),
             axis.text.x = element_text(angle = 45, hjust = 1))  +
       theme(plot.margin=unit(c(2,2,2,2),"cm")) +
-      scale_y_continuous(labels = scales::comma) + # Disable scientific notation
+      scale_y_discrete(labels = scales::comma) + # Disable scientific notation
       ggtitle(paste(Departments(), input$title__1_)) +
       xlab(input$xLabel__1_) + ylab(input$yLabel__1_) +
       theme(axis.title.y = element_text(margin = margin(t = 10, r = 10, b = 10, l = 10))) +
