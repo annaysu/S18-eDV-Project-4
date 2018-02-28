@@ -39,7 +39,7 @@ sessionInfo()
 
 Data.world Project link: https://data.world/yuchan-su/s18-edv-project-2
 
-GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject1-su-makkapati-calvert
+GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject2-su-makkapati-calvert
 
 
 #Create Dataframes
