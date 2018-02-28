@@ -3,7 +3,7 @@ dfB <- eventReactive(c(input$selectDepartment_1), {
   data.world::set_config(cfg_env("DW_API")) 
   paramQuery <- data.world::qry_sql(
     "   
-    select department, age, distancefromhome
+    select department, age, distancefromhome,totalworkingyears
     from ibm_hr_attrition
     where department in (?, ?, ?)
     order by department
