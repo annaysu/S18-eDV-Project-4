@@ -1,0 +1,319 @@
+---
+title: "Project 2"
+author: "Anna Su, Donovan Calvert, Naren Makkapati"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+This is an R Interactive Document, which uses the [R Markdown](http://rmarkdown.rstudio.com/authoring_basics.html) language to generate HTML. For a brief introduction to R Markdown, please review this [video](https://www.youtube.com/watch?v=DNS7i2m4sB0&feature=youtu.be).
+
+#Load Packages
+This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
+The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Display Session Information
+The [sessionInfo() fuction](https://cran.r-project.org/web/packages/sessioninfo/sessioninfo.pdf) queries and prints information about the current R session including  information about packages, and from where they were installed.
+```{r}
+sessionInfo()
+```
+
+#Section for Links
+
+Data.world Project link: https://data.world/yuchan-su/s18-edv-project-2
+
+GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject1-su-makkapati-calvert
+
+
+#Create Dataframes
+The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the IBM Attrition database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
+
+```{r}
+source("DataA.R", local = TRUE)
+source("DataB.R", local = TRUE)
+```
+
+#Retrieve Departments from the IBM Attrition dataset
+The following query retrieves the distinct department names from the IBM Attrition dataset at data.world and saves the department names in the departments variable.
+```{r}
+project <- "https://data.world/yuchan-su/s18-edv-project-2" 
+data.world::set_config(cfg_env("DW_API")) 
+
+#query that selects region
+departments <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct department
+  from ibm_hr_attrition
+ "), 
+dataset = project)
+```
+#Create a Deparment Variable
+Create a Departments variable with a string constructed from the selected departments in the input$selectDepartment_1 variable.This Departments variable will be used in the title of the ggplot below.
+
+```{r}
+Departments <- eventReactive(c(input$selectDepartment_1), { 
+  library('stringr')
+  str_c(input$selectDepartment_1, collapse=', ')
+})
+```
+
+#Create Panel with Select List
+The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting departments (notice - choices is set to the departments variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+
+```{r}
+inputPanel(
+  selectInput("selectDepartment_1", label = "Select Department",choices = departments, multiple=TRUE, selected=c("Sales","Human Resources","Research & Development"))
+)
+```
+
+#Render and Display the Shipping Costs Histograms
+
+Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
+      menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("dashboard")),
+      menuItem("Distance from Home Histogram", tabName = "both", icon = icon("dashboard")),
+      menuItem("Department Age Histogram", tabName = "newplot", icon = icon("dashboard")),
+      menuItem("Total Years Worked Boxplot", tabName = "boxplot", icon = icon("dashboard"))
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Monthly Incomes Histogram" tab content
+      tabItem(tabName = "histogram",
+        p("Context: This plot shows the histogram of the monthly income of different departments."),
+        source("Histogram1UI.R",local = TRUE)$value
+      ),
+      # 2. "Monthly Incomes Density Plot" tab content
+      tabItem(tabName = "density",
+        p("Context: A density plot of the monthly income of different departments is created for a different graphic visualization."),
+        source("Density1UI.R",local = TRUE)$value
+      ),
+      # 3. "Shipping Costs Histogram and Density Plot" tab content
+      tabItem(tabName = "both",
+        p("Context: This plot shows the histogram of the distance from home filtered by different departments."),
+        source("Both1UI.R",local = TRUE)$value
+      ),
+      # 4. "Sales Histogram" tab content
+      tabItem(tabName = "newplot",
+        p("Context: This plot shows the histogram of age of the employees in different departments."),
+        source("NewPlot1UI.R",local = TRUE)$value
+      ),
+      # 5. "Monthly Incomes Histogram" tab content
+      tabItem(tabName = "boxplot",
+        p("Context: This plot shows the boxplot of the total years worked of employees at IBM categorized by department"),
+        source("Boxplot1UI.R",local = TRUE)$value
+      )
+      )
+    )
+  )
+source("Histogram1Server.R", local = TRUE)
+source("Density1Server.R", local = TRUE)
+source("Both1Server.R", local = TRUE)
+source("NewPlot1Server.R", local = TRUE)
+source("Boxplot1Server.R", local = TRUE)
+```
+
+<h3>Monthly Income Histogram Analysis:</h3> 
+We can see that most of the income falls between $3,000 - $7,500. This shows that most of their employees are earning average wage which makes sense because higher wages are usually for top executive positions for technically heavy positions. The blue represents the sales department and seems like the month income count decreases as the salary increases. Sales is a compensation based position and their salary is flexible but usually the highest paid are awarded to top percentages sellers. This causes the salary to be normally distributed with the middle being the most concentrated count. Seem like Human Resource and Research & Development has similar pattern in Monthly Income Count.
+
+<h3>Distance from Home Histogram Analysis:</h3>
+There seems to be an equal number of people in every department that lives a certain distance from work. Unsurprisingly, most people live closer to home, making the graph skewed to the left. This sample size tells us that being in Human Resources, Research & Development, or Sales, doesn’t have much of an impact on deciding whether they want to live close or far away from work. I personally would have thought the Sales department would live closer to home since they often have to travel during work. 
+
+<h3>Department Age Histogram Analysis:</h3>
+This histogram shows that much of the population falls within 30-50 with a normally distributed graph. We could see that IBM might be having some difficulty retaining their older employees as we see a big drop from 50-60 years old. This seems to be a common trend in all the department. 
+
+<h3>Total Years Worked Boxplot Analysis:</h3>
+This boxplot showed that Research & Development has an overall longer working experience in the same company. However, all boxplots have about the same mean, meaning that their average working experience is still the same. It makes sense that people in Research & Development would have more years of work since their job heavily determines on time and experience. Company might tend to want to keep their employees that has access to their private information for a longer amount of time in order to prevent constant leaking of private business information. 
+
+<br>
+
+#Tableau Insights
+<br>
+<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet3?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/profile/naren.makkapati#!/vizhome/JobSatRoleOver/Sheet3">Link to Insight</a>
+Here, we can see how education levels compare in the different job roles in the various departments. When compared against income, we don't really see an increase in monthly income as education levels increase. Additionally, we see that education levels are not too spread out, and engineers and researchers are not the job role with the highest average education level. Rather, that goes to Human Resources managers. The size of each group is represented in the size of the circle, showing the almost ridiculous fact that there are more sales executives than there are sales representatives, which is not necessarily related to the main point of this graph, but interesting nonetheless.
+<br><br>
+<iframe src="https://public.tableau.com/views/Project2_150/MonthlyIncomebyAgeEducationField?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/Project2_150/MonthlyIncomebyAgeEducationField?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+This histogram breaks up the monthly incomes of people in different fields and then uses colors to show the ages of those individuals. Ages were broken up into groups by age ranges of 5's (21-25, 26-30, etc) following the ROYGBIV order to help understanding them more easily by just looking at them.
+<br><br>
+
+<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet2?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/JobSatRoleOver/Sheet2?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+Among all IBM employees, average job satisfaction is relatively even. In a separate graph, it was seen that overtime did not greatly affect average job satisfaction among all employees. However, when broken down into the different roles, overtime seems to have a different effect on employees. In a somewhat predictable manner, job satisfaction increases with overtime in employees whose salaries are commission based, such as Sales Executives, Sales Representatives, and Healthcare Representatives, as well as Laboratory Technician, which is almost certainly an hourly position. However, in fixed-salary, non-management positions such as HR and Research Scientist, job satisfaction decreases with overtime worked.
+
+The most interesting observation though, comes with Managers, Manufacturing Directors, and Research Directors. Both Managers and Research Directors have increased job satisfaction when working overtime, but Manufacturing Directs have a decreased satisfaction. Considering that other management positions seem to enjoy increased job satisfaction when working overtime, the decrease in job satisfaction among Manufacturing Directors would be a worrisome note, and should be researched further upon. It could indicate more fundamental problems in the business hierarchy that could result in loss of talent and productivity.
+<br><br>
+
+<iframe src="https://public.tableau.com/views/Project2_150/JobSatisfactionHistogram?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/Project2_150/JobSatisfactionHistogram?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+This histogram looks at the job satisfaction of the three departments and allows for the comparison of male and female results. Seems like male tends to have more extreme values of satisfaction (1 or 5 rating) while female employees tends to be more in the average satisfaction. (2-4 rating) We wonder if this is related to how female and male minds works differently. 
+
+<br><br>
+<iframe src="https://public.tableau.com/views/IBM_Attrition/AttritionAge?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/IBM_Attrition/AttritionAge?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+This is a graph where you can filter department to see the age of attrition. You can see that in the Human Resources, people tend to leave the company at a younger age (which makes sense because it's not a very "technical" position so people tend to be able to easy transition into different company without too much trouble. For Research & Dev., they tend to have be the "brain and knowledge" of the company and so they are bounded to stay for longer. They might also have higher pay so they tend to stay under they are at an older age.
+
+Lastly for Sales, they retire throughout different ages (almost equally- the high in age 25- 35 might be skewed by that total employment age be the higher in that group). And this makes sense because you need mixture of different ages in sales since they need employees that relates to all ages. But at the same time it's an occupation that also doesn't matter much in age(except experience) since sales is mostly about how well the person can sell the product through personality + characteristics like (friendliness, persuasiveness, manipulation, and physical appearance).
+<br><br>
+<iframe src="https://public.tableau.com/views/IBM_Attrition/GenerIncome?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/IBM_Attrition/GenerIncome?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+This boxplot shows the income distribution of the male and female employee. I was wanting to see if tech companies still have the stereotype of paying men more than women. But surprisingly I found that the mean income of women is actually higher than the mean income of men. Also IBM is one of the first tech company to have a woman CEO.
+<br><br>
+<iframe src="https://public.tableau.com/views/IBM_Attrition/Overtime?:showVizHome=no" height="500" width="800"></iframe>
+<br><br>
+<a href="https://public.tableau.com/views/IBM_Attrition/Overtime?:increment_view_count=no&:embed=y&:embed_code_version=3&:loadOrderID=0&:display_count=yes">Link to Insight</a>
+This graph shows job satisfaction ranking from 1-4 and 4 as the highest. I tried to see if there's any correlation between working overtime and job satisfaction but turn out that people aren't less satisfied if they have to work overtime. Maybe we can infer that people that likes their job (satisfied) also enjoys working overtime.
+<br><br>
+
+
+#Appendix
+
+Displays the code we used to clean up our data. Some code are commented out # (for example the loading/creating new csv file) since they are not needed right now in the interactive application code. However, be aware that it's still part of the process.
+```{r}
+
+library(tidyverse)
+csvURL <- "https://query.data.world/s/-5chQ_I_MEpn_Pp7NCDce901hNnrs6"
+
+#the lines here would have to change to match the columns in YOUR csv!; you're just telling them if it's string or numbers; SO you are letting them know that sales and profit is actually NUMBERS, since they had the ',' in there before to make it not all integers 
+
+df <- read_csv(csvURL, col_types = list(
+  age = col_number(),
+  attrition = col_character(),
+  businesstravel = col_character(),
+  dailyrate= col_number(),
+  department = col_character(),
+  distancefromhome= col_number(),
+  education = col_number(),
+  educationfield = col_character(),
+  employeecount = col_character(),
+  employeenumber = col_number(),
+  environmentsatisfaction = col_number(),
+  gender = col_character(),
+  hourlyrate = col_number(),
+  jobinvolvement = col_number(),
+  joblevel = col_number(),
+  job_role = col_character(),
+  jobsatisfaction = col_number(),
+  maritalstatus = col_character(),
+  monthlyincome = col_number(),
+  monthlyrate = col_number(),
+  numcompaniesworked = col_number(),
+  over18 = col_character(),
+  overtime = col_character(),
+  percentsalaryhike = col_number(),
+  performancerating = col_number(),
+  relationshipsatisfaction = col_number(),
+  standardhours = col_number(),
+  stockoptionlevel = col_number(),
+  totalworkingyears = col_number(),
+  trainingtimeslastyear = col_number(),
+  worklifebalance = col_number(),
+  yearsatcompany = col_number(),
+  yearsincurrentrole = col_number(),
+  yearssincelastpromotion = col_number(),
+  yearswithcurrmanager = col_number()
+))
+
+# Change .+ and -+ in column names to _
+#find any dot (.) and change it to _
+names(df) <- gsub("\\.+", " ", names(df))
+
+# Change .+, -+,=,&,+ in column names to "" blank
+#find any dot (.) and change it to _
+names(df) <- gsub("\\/", " ", names(df))
+names(df) <- gsub("\\=", " ", names(df))
+names(df) <- gsub("\\&", " ", names(df))
+names(df) <- gsub("\\+", " ", names(df))
+
+#find any (-) in the column name and change to _
+names(df) <- gsub("-+", " ", names(df))
+
+# Remove non-printable characters from column names.
+names(df) <- gsub("[^ -~]", "", names(df)) 
+
+# Change null values in the region_sales and region_profit columns to 0.
+#df <- df %>% tidyr::replace_na(list(Age=0, DistanceFromHome =0, EmployeeCount =0, EmployeeNumber = 0, EnvironmentSatisfaction =0, JobInvolvement = 0, JobSatisfaction = 0, NumCompaniesWorked = 0, PerformanceRating = 0, RelationshipSatisfaction = 0, StockOptionLevel = 0, TotalWorkingYears = 0, TrainingTimesLastYear = 0, WorkLifeBalance = 0, YearsAtCompany = 0, YearsInCurrentRole = 0, YearsSinceLastPromotion = 0, YearsWithCurrManager = 0 ))
+
+# Remove non-printable characters from all column values.
+df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
+#^ the "." at the end refers to what was pipe in, which is refering to the "df" 
+
+# The following write_csv followed immediately by a read_csv, fixes the column types.
+#write_csv(df, "//Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/S18 eDV Project 1 Dataset.csv") # /Users/pcannata/Downloads needs to be changed to a known folder on your machine.
+
+# df <- read_csv("/Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/S18 eDV Project 1 Dataset.csv", col_types = list(
+#   age = col_number(),
+#   attrition = col_character(),
+#   businesstravel = col_character(),
+#   dailyrate= col_number(),
+#   department = col_character(),
+#   distancefromhome= col_number(),
+#   education = col_number(),
+#   educationfield = col_character(),
+#   employeecount = col_character(),
+#   employeenumber = col_number(),
+#   environmentalsatisfaction = col_number(),
+#   gender = col_character(),
+#   hourlyrate = col_number(),
+#   jobinvolvement = col_number(),
+#   joblevel = col_number(),
+#   job_role = col_character(),
+#   jobsatisfaction = col_number(),
+#   maritalstatus = col_character(),
+#   monthlyincome = col_number(),
+#   monthlyrate = col_number(),
+#   numcompaniesworked = col_number(),
+#   over18 = col_character(),
+#   overtime = col_character(),
+#   percentsalaryhike = col_number(),
+#   performancerating = col_number(),
+#   relationshipsatisfaction = col_number(),
+#   standardhours = col_number(),
+#   stockoptionlevel = col_number(),
+#   totalworkingyears = col_number(),
+#   trainingtimeslastyear = col_number(),
+#   worklifebalance = col_number(),
+#   yearsatcompany = col_number(),
+#   yearsincurrentrole = col_number(),
+#   yearssincelastpromotion = col_number(),
+#   yearswithcurrentmanager = col_number()
+# ))
+# Now save the cleaned data to new.csv
+#write_csv(df, "/Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/newS18 eDV Project 1 Dataset.csv")
+# Now load /tmp/new.csv into a data.world Dataset.
+#df
+
+```
+
+
