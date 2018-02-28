@@ -41,9 +41,7 @@ Data.world Project link: https://data.world/yuchan-su/s18-edv-project-2
 
 GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject1-su-makkapati-calvert
 
-#Tableau Insights
 
-<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet3?:showVizHome=no" height="500" width="800">
 
 #Create Dataframes
 The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.
@@ -131,6 +129,44 @@ source("Density1Server.R", local = TRUE)
 source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
 ```
+
+
+#Tableau Insights
+
+<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet3?:showVizHome=no" height="500" width="800">
+
+Here, we can see how education levels compare in the different job roles in the various departments. When compared against income, we don't really see an increase in monthly income as education levels increase. Additionally, we see that education levels are not too spread out, and engineers and researchers are not the job role with the highest average education level. Rather, that goes to Human Resources managers. The size of each group is represented in the size of the circle, showing the almost ridiculous fact that there are more sales executives than there are sales representatives, which is not necessarily related to the main point of this graph, but interesting nonetheless.
+
+<iframe src="https://public.tableau.com/views/Project2_150/MonthlyIncomebyAgeEducationField?:showVizHome=no" height="500" width="800">
+
+This histogram breaks up the monthly incomes of people in different fields and then uses colors to show the ages of those individuals. Ages were broken up into groups by age ranges of 5's (21-25, 26-30, etc) following the ROYGBIV order to help understanding them more easily by just looking at them.
+
+
+<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet2?:showVizHome=no" height="500" width="800">
+
+Among all IBM employees, average job satisfaction is relatively even. In a separate graph, it was seen that overtime did not greatly affect average job satisfaction among all employees. However, when broken down into the different roles, overtime seems to have a different effect on employees. In a somewhat predictable manner, job satisfaction increases with overtime in employees whose salaries are commission based, such as Sales Executives, Sales Representatives, and Healthcare Representatives, as well as Laboratory Technician, which is almost certainly an hourly position. However, in fixed-salary, non-management positions such as HR and Research Scientist, job satisfaction decreases with overtime worked.
+
+The most interesting observation though, comes with Managers, Manufacturing Directors, and Research Directors. Both Managers and Research Directors have increased job satisfaction when working overtime, but Manufacturing Directs have a decreased satisfaction. Considering that other management positions seem to enjoy increased job satisfaction when working overtime, the decrease in job satisfaction among Manufacturing Directors would be a worrisome note, and should be researched further upon. It could indicate more fundamental problems in the business hierarchy that could result in loss of talent and productivity.
+
+
+<iframe src="https://public.tableau.com/views/Project2_150/JobSatisfactionHistogram?:showVizHome=no" height="500" width="800">
+
+This histogram looks at the job satisfaction of the three departments and allows for the comparison of male and female results.
+
+
+<iframe src="https://public.tableau.com/views/IBM_Attrition/AttritionAge?:showVizHome=no" height="500" width="800">
+
+This is a graph where you can filter department to see the age of attrition. You can see that in the Human Resources, people tend to leave the company at a younger age (which makes sense because it's not a very "technical" position so people tend to be able to easy transition into different company without too much trouble. For Research & Dev., they tend to have be the "brain and knowledge" of the company and so they are bounded to stay for longer. They might also have higher pay so they tend to stay under they are at an older age.
+
+Lastly for Sales, they retire throughout different ages (almost equally- the high in age 25- 35 might be skewed by that total employment age be the higher in that group). And this makes sense because you need mixture of different ages in sales since they need employees that relates to all ages. But at the same time it's an occupation that also doesn't matter much in age(except experience) since sales is mostly about how well the person can sell the product through personality + characteristics like (friendliness, persuasiveness, manipulation, and physical appearance).
+
+<iframe src="https://public.tableau.com/views/IBM_Attrition/GenerIncome?:showVizHome=no" height="500" width="800">
+
+This boxplot shows the income distribution of the male and female employee. I was wanting to see if tech companies still have the stereotype of paying men more than women. But surprisingly I found that the mean income of women is actually higher than the mean income of men. Also IBM is one of the first tech company to have a woman CEO.
+
+<iframe src="https://public.tableau.com/views/IBM_Attrition/Overtime?:showVizHome=no" height="500" width="800">
+
+This graph shows job satisfaction ranking from 1-4 and 4 as the highest. I tried to see if there's any correlation between working overtime and job satisfaction but turn out that people aren't less satisfied if they have to work overtime. Maybe we can infer that people that likes their job (satisfied) also enjoys working overtime.
 
 #Appendix
 
