@@ -1,6 +1,6 @@
 ---
-title: "Top Hat Histograms"
-author: "Dr. Cannata"
+title: "Project 2"
+author: "Anna Su, Donovan Calvert, Naren Makkapati"
 resource_files:
 - .Renviron
 output:
@@ -94,7 +94,7 @@ dashboardPage(
     sidebarMenu(
       menuItem("Monthly Income Histogram", tabName = "histogram", icon = icon("dashboard")),
       menuItem("Monthly Income Density Plot", tabName = "density", icon = icon("dashboard")),
-      menuItem("Department Satisfaction", tabName = "both", icon = icon("dashboard")),
+      menuItem("Job Satisfaction", tabName = "both", icon = icon("dashboard")),
       menuItem("Department Age", tabName = "newplot", icon = icon("dashboard"))
     )
   ),
@@ -128,5 +128,123 @@ source("Both1Server.R", local = TRUE)
 source("NewPlot1Server.R", local = TRUE)
 ```
 
+#Appendix
+
+Displays the code we used to clean up our data. Some code are commented out # (for example the loading/creating new csv file) since they are not needed right now in the interactive application code. However, be aware that it's still part of the process.
+```{r}
+
+library(tidyverse)
+csvURL <- "https://query.data.world/s/-5chQ_I_MEpn_Pp7NCDce901hNnrs6"
+
+#the lines here would have to change to match the columns in YOUR csv!; you're just telling them if it's string or numbers; SO you are letting them know that sales and profit is actually NUMBERS, since they had the ',' in there before to make it not all integers 
+
+df <- read_csv(csvURL, col_types = list(
+  age = col_number(),
+  attrition = col_character(),
+  businesstravel = col_character(),
+  dailyrate= col_number(),
+  department = col_character(),
+  distancefromhome= col_number(),
+  education = col_number(),
+  educationfield = col_character(),
+  employeecount = col_character(),
+  employeenumber = col_number(),
+  environmentsatisfaction = col_number(),
+  gender = col_character(),
+  hourlyrate = col_number(),
+  jobinvolvement = col_number(),
+  joblevel = col_number(),
+  job_role = col_character(),
+  jobsatisfaction = col_number(),
+  maritalstatus = col_character(),
+  monthlyincome = col_number(),
+  monthlyrate = col_number(),
+  numcompaniesworked = col_number(),
+  over18 = col_character(),
+  overtime = col_character(),
+  percentsalaryhike = col_number(),
+  performancerating = col_number(),
+  relationshipsatisfaction = col_number(),
+  standardhours = col_number(),
+  stockoptionlevel = col_number(),
+  totalworkingyears = col_number(),
+  trainingtimeslastyear = col_number(),
+  worklifebalance = col_number(),
+  yearsatcompany = col_number(),
+  yearsincurrentrole = col_number(),
+  yearssincelastpromotion = col_number(),
+  yearswithcurrmanager = col_number()
+))
+
+# Change .+ and -+ in column names to _
+#find any dot (.) and change it to _
+names(df) <- gsub("\\.+", " ", names(df))
+
+# Change .+, -+,=,&,+ in column names to "" blank
+#find any dot (.) and change it to _
+names(df) <- gsub("\\/", " ", names(df))
+names(df) <- gsub("\\=", " ", names(df))
+names(df) <- gsub("\\&", " ", names(df))
+names(df) <- gsub("\\+", " ", names(df))
+
+#find any (-) in the column name and change to _
+names(df) <- gsub("-+", " ", names(df))
+
+# Remove non-printable characters from column names.
+names(df) <- gsub("[^ -~]", "", names(df)) 
+
+# Change null values in the region_sales and region_profit columns to 0.
+#df <- df %>% tidyr::replace_na(list(Age=0, DistanceFromHome =0, EmployeeCount =0, EmployeeNumber = 0, EnvironmentSatisfaction =0, JobInvolvement = 0, JobSatisfaction = 0, NumCompaniesWorked = 0, PerformanceRating = 0, RelationshipSatisfaction = 0, StockOptionLevel = 0, TotalWorkingYears = 0, TrainingTimesLastYear = 0, WorkLifeBalance = 0, YearsAtCompany = 0, YearsInCurrentRole = 0, YearsSinceLastPromotion = 0, YearsWithCurrManager = 0 ))
+
+# Remove non-printable characters from all column values.
+df <- df %>% dplyr::mutate_all(funs(gsub(pattern="[^ -~]", replacement= "", .)))
+#^ the "." at the end refers to what was pipe in, which is refering to the "df" 
+
+# The following write_csv followed immediately by a read_csv, fixes the column types.
+#write_csv(df, "//Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/S18 eDV Project 1 Dataset.csv") # /Users/pcannata/Downloads needs to be changed to a known folder on your machine.
+
+# df <- read_csv("/Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/S18 eDV Project 1 Dataset.csv", col_types = list(
+#   age = col_number(),
+#   attrition = col_character(),
+#   businesstravel = col_character(),
+#   dailyrate= col_number(),
+#   department = col_character(),
+#   distancefromhome= col_number(),
+#   education = col_number(),
+#   educationfield = col_character(),
+#   employeecount = col_character(),
+#   employeenumber = col_number(),
+#   environmentalsatisfaction = col_number(),
+#   gender = col_character(),
+#   hourlyrate = col_number(),
+#   jobinvolvement = col_number(),
+#   joblevel = col_number(),
+#   job_role = col_character(),
+#   jobsatisfaction = col_number(),
+#   maritalstatus = col_character(),
+#   monthlyincome = col_number(),
+#   monthlyrate = col_number(),
+#   numcompaniesworked = col_number(),
+#   over18 = col_character(),
+#   overtime = col_character(),
+#   percentsalaryhike = col_number(),
+#   performancerating = col_number(),
+#   relationshipsatisfaction = col_number(),
+#   standardhours = col_number(),
+#   stockoptionlevel = col_number(),
+#   totalworkingyears = col_number(),
+#   trainingtimeslastyear = col_number(),
+#   worklifebalance = col_number(),
+#   yearsatcompany = col_number(),
+#   yearsincurrentrole = col_number(),
+#   yearssincelastpromotion = col_number(),
+#   yearswithcurrentmanager = col_number()
+# ))
+# Now save the cleaned data to new.csv
+#write_csv(df, "/Users/annasu/Desktop/Spring 2018 Class/CS 329 Data Visualization/Project2/newS18 eDV Project 1 Dataset.csv")
+# Now load /tmp/new.csv into a data.world Dataset.
+#df
+
+```
 
 
