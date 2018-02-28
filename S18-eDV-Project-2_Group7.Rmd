@@ -43,7 +43,7 @@ GitHub Classroom Repository link: https://github.com/CannataUTDV/s18dvproject1-s
 
 #Tableau Insights
 
-<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet3?:showVizHome=no" height="500" width="800">
+<iframe src="https://public.tableau.com/views/JobSatRoleOver/Sheet3?:showVizHome=no" height="500" width="800"></iframe>
 
 #Create Dataframes
 The sourced code below contains Shiny [eventReactive](https://shiny.rstudio.com/reference/shiny/1.0.1/observeEvent.html) code and queries for the SuperStore database at data.world. The data is saved in variables as functions that return an R dataframe. These are examples data.world parameterized queries; details for data.world queries can be found at this [link](https://cran.r-project.org/web/packages/data.world/vignettes/query.html). The "?"s in the query are parameters. The parameters are filled in (in order) by the paramQuery$params statement.

@@ -14,14 +14,9 @@
 # Build and Output Throughput Plot ------------------------
   output$Histogram__5_ <- renderPlotly({
     plot = dfB1() %>% ggplot() + 
-      geom_boxplot(mapping = aes(x = major_category, y = totalworkingyears), size = 2) +
+      geom_boxplot(mapping = aes(x = department , y = totalworkingyears), size = 2) +
       theme_bw() +
       theme(plot.title = element_text(size = input$titleFont__5_, face = "bold")) + 
-      theme( # Legend Attributes - see https://github.com/tidyverse/ggplot2/wiki/Legend-Attributes
-        legend.title=element_text(size=input$legendTitleSize__5_), 
-        legend.text=element_text(size=input$legendItemSize__5_),
-        legend.key = element_rect(size = input$legendKeySize__5_),
-        legend.key.size = unit(input$legendKeySize__5_, 'lines')) +
       theme(axis.text=element_text(size=input$textFont__5_),
             axis.title=element_text(size=input$textFont__5_, face="bold"),
             axis.text.x = element_text(angle = 45, hjust = 1))  +
